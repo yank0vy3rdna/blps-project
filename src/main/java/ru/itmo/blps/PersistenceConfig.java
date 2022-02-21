@@ -20,9 +20,9 @@ public class PersistenceConfig {
     @Bean
     public DataSource dataSource() {
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setUrl("jdbc:postgresql://localhost:5432/blps");
+        ds.setUrl("jdbc:postgresql://localhost:5432/postgres");
         ds.setUser("postgres");
-        ds.setPassword("postgres");
+        ds.setPassword("123456");
         ds.setSslMode("disable");
         return ds;
     }

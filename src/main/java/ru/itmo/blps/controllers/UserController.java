@@ -2,8 +2,8 @@ package ru.itmo.blps.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.itmo.blps.mappers.UserMapper;
-import ru.itmo.blps.models.User;
+import ru.itmo.blps.DAO.mappers.UserMapper;
+import ru.itmo.blps.DAO.entities.User;
 
 @RestController
 class UserController {

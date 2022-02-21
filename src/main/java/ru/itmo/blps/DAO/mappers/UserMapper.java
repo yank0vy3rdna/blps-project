@@ -1,10 +1,9 @@
-package ru.itmo.blps.mappers;
+package ru.itmo.blps.DAO.mappers;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.SelectKey;
-import org.springframework.context.annotation.Bean;
-import ru.itmo.blps.models.User;
+import ru.itmo.blps.DAO.entities.User;
 
 import java.util.List;
 
