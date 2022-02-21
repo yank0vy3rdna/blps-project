@@ -16,6 +16,6 @@
         </environment>
     </environments>
     <mappers>
-        <package name="ru.itmo.blps.mappers"/>
+        <package name="ru.itmo.blps.DAO.mappers"/>
     </mappers>
 </configuration>
