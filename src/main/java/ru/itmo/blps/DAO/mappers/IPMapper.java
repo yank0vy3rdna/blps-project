@@ -8,6 +8,7 @@ import ru.itmo.blps.DAO.entities.Initiator_project;
 
 import java.util.List;
 
+// Mapper for Initiator project.
 @Mapper
 public interface IPMapper {
     @Insert("insert into initiator_project(user_id, project_id) values " +

@@ -1,12 +1,15 @@
 package ru.itmo.blps.DAO.mappers;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import ru.itmo.blps.DAO.entities.Backer_project;
 
 import java.util.List;
 
+// Mapper for Backer project.
+@Mapper
 public interface BPMapper {
     @Insert("insert into backer_project(user_id, project_id) values " +
             "(#{user_id},#{project_id})")
