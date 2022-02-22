@@ -16,7 +16,7 @@ public interface BRMapper {
     @Insert("insert into back_record(user_id, project_id, amount) values " +
             "(#{user_id},#{project_id},#{amount})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    void insertBR(Back_record br);
+    int insertBR(Back_record br);
 
     @Select("select * from back_record where id = #{id}")
     Back_record findBRById(Integer id);

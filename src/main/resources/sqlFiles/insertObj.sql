@@ -57,3 +57,7 @@ VALUES (4, 2, 1000),
        (3, 2, 1000),
        (1, 2, 1000),
        (4, 4, 1000);
+
+alter table project
+    add status integer default 0 not null;
+

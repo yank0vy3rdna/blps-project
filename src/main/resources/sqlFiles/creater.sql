@@ -13,6 +13,7 @@ CREATE TABLE project
     target_amount  integer,
     current_amount integer,
     description    text,
+    status         integer,
     PRIMARY KEY (id)
 );
 

@@ -14,7 +14,7 @@ public interface IPMapper {
     @Insert("insert into initiator_project(user_id, project_id) values " +
             "(#{user_id},#{project_id})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    void insertIP(Initiator_project bp);
+    int insertIP(Initiator_project bp);
 
     @Select("select * from initiator_project where user_id = #{uid}")
     Initiator_project findIPByUID(Integer uid);

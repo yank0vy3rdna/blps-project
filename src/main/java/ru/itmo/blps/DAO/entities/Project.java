@@ -11,7 +11,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Project implements Serializable {
     private Integer id;
-    private Integer initiator_id;
+    private String name;
     private Integer target_amount;
     private Integer current_amount;
+    private String description;
+    private Integer status;
 }
