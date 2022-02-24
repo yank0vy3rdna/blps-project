@@ -11,7 +11,7 @@ import ru.itmo.blps.services.ProjectService;
 import java.util.List;
 
 @RestController
-public class ProjectController {
+public class ProjectController extends BasicController{
     private final ProjectMapper projectMapper;
     private final ProjectService projectService;
 

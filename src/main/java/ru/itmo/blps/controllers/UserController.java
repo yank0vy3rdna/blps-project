@@ -6,7 +6,7 @@ import ru.itmo.blps.DAO.mappers.UserMapper;
 import ru.itmo.blps.DAO.entities.User;
 
 @RestController
-class UserController {
+class UserController extends BasicController{
     private final UserMapper userMapper;
 
     UserController(UserMapper userMapper) {
