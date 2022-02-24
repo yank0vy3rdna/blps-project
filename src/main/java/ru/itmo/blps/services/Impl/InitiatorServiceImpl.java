@@ -8,15 +8,15 @@ import ru.itmo.blps.DAO.mappers.UserMapper;
 import ru.itmo.blps.services.Exceptions.NoSuchProjectException;
 import ru.itmo.blps.services.Exceptions.NoSuchUserException;
 import ru.itmo.blps.services.Exceptions.ServiceException;
-import ru.itmo.blps.services.initiatorService;
+import ru.itmo.blps.services.InitiatorService;
 
 @Service
-public class initiatorServiceImpl implements initiatorService {
+public class InitiatorServiceImpl implements InitiatorService {
 
     private final ProjectMapper projectMapper;
     private final UserMapper userMapper;
 
-    public initiatorServiceImpl(ProjectMapper projectMapper, UserMapper userMapper) {
+    public InitiatorServiceImpl(ProjectMapper projectMapper, UserMapper userMapper) {
         this.projectMapper = projectMapper;
         this.userMapper = userMapper;
     }

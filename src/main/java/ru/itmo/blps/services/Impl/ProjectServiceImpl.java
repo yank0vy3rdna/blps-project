@@ -14,12 +14,12 @@ import ru.itmo.blps.services.ProjectService;
 import java.util.List;
 
 @Service
-public class projectServiceImpl implements ProjectService {
+public class ProjectServiceImpl implements ProjectService {
     private final ProjectMapper projectMapper;
 
     private final UserMapper userMapper;
 
-    public projectServiceImpl(ProjectMapper projectMapper, UserMapper userMapper) {
+    public ProjectServiceImpl(ProjectMapper projectMapper, UserMapper userMapper) {
         this.projectMapper = projectMapper;
         this.userMapper = userMapper;
     }

@@ -1,15 +1,20 @@
 package ru.itmo.blps.services.Impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
 import ru.itmo.blps.services.Exceptions.NoSuchProjectException;
-import ru.itmo.blps.services.adminService;
+import ru.itmo.blps.services.AdminService;
 
-public class adminServiceImpl implements adminService {
+@Service
+public class AdminServiceImpl implements AdminService {
 
-    @Autowired
-    private ProjectMapper projectMapper;
+
+    private final ProjectMapper projectMapper;
+
+    public AdminServiceImpl(ProjectMapper projectMapper) {
+        this.projectMapper = projectMapper;
+    }
 
     @Override
     public int setStatus(Integer pid, Integer statusCode) {

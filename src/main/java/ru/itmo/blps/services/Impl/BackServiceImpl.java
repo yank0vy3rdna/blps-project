@@ -10,10 +10,10 @@ import ru.itmo.blps.DAO.mappers.UserMapper;
 import ru.itmo.blps.services.Exceptions.NoSuchProjectException;
 import ru.itmo.blps.services.Exceptions.NoSuchUserException;
 import ru.itmo.blps.services.Exceptions.ServiceException;
-import ru.itmo.blps.services.backService;
+import ru.itmo.blps.services.BackService;
 
 @Service
-public class backServiceImpl implements backService {
+public class BackServiceImpl implements BackService {
 
     private final BRMapper brMapper;
 
@@ -21,7 +21,7 @@ public class backServiceImpl implements backService {
 
     private final UserMapper userMapper;
 
-    public backServiceImpl(BRMapper brMapper, ProjectMapper projectMapper, UserMapper userMapper) {
+    public BackServiceImpl(BRMapper brMapper, ProjectMapper projectMapper, UserMapper userMapper) {
         this.brMapper = brMapper;
         this.projectMapper = projectMapper;
         this.userMapper = userMapper;
