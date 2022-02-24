@@ -12,8 +12,8 @@ import java.io.Serializable;
 public class Project implements Serializable {
     private Integer id;
     private String name;
-    private Integer target_amount;
-    private Integer current_amount;
+    private Integer targetAmount;
+    private Integer currentAmount;
     private String description;
     private Integer status;
 }

@@ -4,8 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
-import ru.itmo.blps.DAO.entities.Back_record;
-import ru.itmo.blps.DAO.entities.User;
+import ru.itmo.blps.DAO.entities.BackRecord;
 
 import java.util.List;
 
@@ -14,25 +13,25 @@ import java.util.List;
 public interface BRMapper {
 
     @Insert("insert into back_record(user_id, project_id, amount) values " +
-            "(#{user_id},#{project_id},#{amount})")
+            "(#{userId},#{projectId},#{amount})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int insertBR(Back_record br);
+    int insertBR(BackRecord br);
 
     @Select("select * from back_record where id = #{id}")
-    Back_record findBRById(Integer id);
+    BackRecord findBRById(Integer id);
 
     @Select("select * from back_record where user_id = #{uid}")
-    Back_record findBRByUID(Integer uid);
+    BackRecord findBRByUID(Integer uid);
 
     @Select("select * from back_record where project_id = #{pid}")
-    Back_record findBRByPID(Integer pid);
+    BackRecord findBRByPID(Integer pid);
 
     @Select("select * from back_record where amount = #{amount}")
-    Back_record findBRByAmount(Integer amount);
+    BackRecord findBRByAmount(Integer amount);
 
     @Select("select * from back_record where user_id = #{uid} and project_id = #{pid}")
-    Back_record findBRByUIDAndPID(Integer uid, Integer pid);
+    BackRecord findBRByUIDAndPID(Integer uid, Integer pid);
 
     @Select("select * from back_record")
-    List<Back_record> findAllBR();
+    List<BackRecord> findAllBR();
 }

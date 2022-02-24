@@ -4,7 +4,7 @@ import ru.itmo.blps.DAO.entities.Project;
 
 import java.util.List;
 
-public interface projectService {
+public interface ProjectService {
     List<Project> getAllProjects();
     int createProject(Integer uid ,Project project);
     int updateCurrentMoney(Integer projectId,Integer changes);

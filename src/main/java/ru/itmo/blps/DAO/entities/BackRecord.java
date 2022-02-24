@@ -9,7 +9,9 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Backer_project implements Serializable {
-    private Integer user_id_id;
-    private Integer project_id;
+public class BackRecord implements Serializable {
+    private Integer id;
+    private Integer userId;
+    private Integer projectId;
+    private Integer amount;
 }

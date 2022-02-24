@@ -2,7 +2,7 @@ package ru.itmo.blps;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
-import ru.itmo.blps.DAO.entities.Back_record;
+import ru.itmo.blps.DAO.entities.BackRecord;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.BRMapper;
@@ -44,8 +44,8 @@ public class MybatisTest {
 //        UsersMapper mapper = sqlSession.getMapper(UsersMapper.class);
 //        Users users = mapper.findUserById(1);
         BRMapper mapper2 = sqlSession.getMapper(BRMapper.class);
-        List<Back_record> pro = mapper2.findAllBR();
-        for (Back_record project : pro) {
+        List<BackRecord> pro = mapper2.findAllBR();
+        for (BackRecord project : pro) {
             System.out.println(project.toString());
         }
         sqlSession.close();

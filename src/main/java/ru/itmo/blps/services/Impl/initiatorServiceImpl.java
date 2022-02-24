@@ -1,6 +1,5 @@
 package ru.itmo.blps.services.Impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
@@ -14,10 +13,13 @@ import ru.itmo.blps.services.initiatorService;
 @Service
 public class initiatorServiceImpl implements initiatorService {
 
-    @Autowired
-    private ProjectMapper projectMapper;
-    @Autowired
-    private UserMapper userMapper;
+    private final ProjectMapper projectMapper;
+    private final UserMapper userMapper;
+
+    public initiatorServiceImpl(ProjectMapper projectMapper, UserMapper userMapper) {
+        this.projectMapper = projectMapper;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public void takeMoney(Integer uid, Integer pid, Integer amount) {

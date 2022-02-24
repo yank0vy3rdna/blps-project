@@ -8,12 +8,13 @@ import ru.itmo.blps.DAO.entities.User;
 
 import java.util.List;
 
+
 @Mapper
 public interface UserMapper {
 
     @Insert("insert into user_t(login,password) values (#{login},#{password})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int insertUser(User user);
+    void insertUser(User user);
 
     @Select("select * from user_t where id = #{id}")
     User findUserById(Integer id);

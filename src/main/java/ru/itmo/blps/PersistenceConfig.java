@@ -13,16 +13,16 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan("ru.itmo.blps.mappers")
+@MapperScan("ru.itmo.blps.DAO.mappers")
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, MybatisAutoConfiguration.class})
 public class PersistenceConfig {
 
     @Bean
     public DataSource dataSource() {
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setUrl("jdbc:postgresql://localhost:5432/postgres");
+        ds.setUrl("jdbc:postgresql://localhost:5432/blps");
         ds.setUser("postgres");
-        ds.setPassword("123456");
+        ds.setPassword("postgres");
         ds.setSslMode("disable");
         return ds;
     }
