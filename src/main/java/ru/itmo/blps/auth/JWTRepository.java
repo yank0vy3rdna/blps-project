@@ -39,7 +39,7 @@ public class JWTRepository implements CsrfTokenRepository {
         String token = "";
         try {
             token = Jwts.builder()
-                    .setId(id)
+                    .setId("")
                     .setIssuedAt(now)
                     .setNotBefore(now)
                     .setExpiration(exp)

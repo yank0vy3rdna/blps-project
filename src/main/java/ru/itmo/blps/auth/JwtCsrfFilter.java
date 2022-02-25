@@ -1,13 +1,13 @@
 package ru.itmo.blps.auth;
 
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import org.springframework.security.web.csrf.CsrfToken;
+import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.InvalidCsrfTokenException;
-import org.springframework.security.web.csrf.MissingCsrfTokenException;
-import org.springframework.security.web.util.UrlUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -17,61 +17,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Component
 public class JwtCsrfFilter extends OncePerRequestFilter {
 
-    private final CsrfTokenRepository tokenRepository;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
 
-    private final HandlerExceptionResolver resolver;
-
-    public JwtCsrfFilter(CsrfTokenRepository tokenRepository, HandlerExceptionResolver resolver) {
-        this.tokenRepository = tokenRepository;
-        this.resolver = resolver;
+    public JwtCsrfFilter(JwtTokenUtil jwtTokenUtil, UserDetailsService userDetailsService) {
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        request.setAttribute(HttpServletResponse.class.getName(), response);
-        CsrfToken csrfToken = this.tokenRepository.loadToken(request);
-        boolean missingToken = csrfToken == null;
-        if (missingToken) {
-            csrfToken = this.tokenRepository.generateToken(request);
-            this.tokenRepository.saveToken(csrfToken, request, response);
-        }
+        final String requestTokenHeader = request.getHeader("Authorization");
 
-        request.setAttribute(CsrfToken.class.getName(), csrfToken);
-        request.setAttribute(csrfToken.getParameterName(), csrfToken);
-        if (request.getServletPath().equals("/auth/login")) {
+        String username = null;
+        String jwtToken = null;
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
             try {
-                filterChain.doFilter(request, response);
-            } catch (Exception e) {
-                resolver.resolveException(request, response, null, new MissingCsrfTokenException(csrfToken.getToken()));
+                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                System.out.println("JWT Token has expired");
             }
         } else {
-            String actualToken = request.getHeader(csrfToken.getHeaderName());
-            if (actualToken == null) {
-                actualToken = request.getParameter(csrfToken.getParameterName());
-            }
-            try {
-                if (!StringUtils.isEmpty(actualToken)) {
-                    Jwts.parser()
-                            .setSigningKey(((JWTRepository) tokenRepository).getSecret())
-                            .parseClaimsJws(actualToken);
+            logger.warn("JWT Token does not begin with Bearer String");
+        }
 
-                    filterChain.doFilter(request, response);
-                } else
-                    resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
-            } catch (JwtException e) {
-                if (this.logger.isDebugEnabled()) {
-                    this.logger.debug("Invalid CSRF token found for " + UrlUtils.buildFullRequestUrl(request));
-                }
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                if (missingToken) {
-                    resolver.resolveException(request, response, null, new MissingCsrfTokenException(actualToken));
-                } else {
-                    resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
-                }
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
+            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
+        filterChain.doFilter(request, response);
     }
 }

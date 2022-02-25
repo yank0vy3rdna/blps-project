@@ -12,15 +12,15 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into user_t(login,password) values (#{login},#{password})")
+    @Insert("insert into user_t(username,password) values (#{username},#{password})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void insertUser(User user);
 
     @Select("select * from user_t where id = #{id}")
     User findUserById(Integer id);
 
-    @Select("select * from user_t where login = #{login}")
-    User findUserByLogin(String login);
+    @Select("select * from user_t where username = #{username}")
+    User findUserByLogin(String username);
 
     @Select("select * from user_t")
     List<User> findAllUsers();
