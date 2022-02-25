@@ -1,60 +1,57 @@
-CREATE TABLE user_t
+create table user_t
 (
-    id       serial,
-    login    varchar(16),
-    password varchar(16),
-    PRIMARY KEY (id)
+    id       serial
+        primary key,
+    username varchar(16)  not null,
+    password varchar(256) not null
 );
 
-CREATE TABLE project
+create unique index user_t_username_uindex
+    on user_t (username);
+
+create table project
 (
-    id             serial,
+    id             serial
+        primary key,
+    target_amount  integer default 0,
+    current_amount integer default 0,
     name           varchar(32),
-    target_amount  integer,
-    current_amount integer,
     description    text,
-    status         integer,
-    PRIMARY KEY (id)
+    status         integer default 0 not null
 );
 
-CREATE TABLE initiator_project
+create table initiator_project
 (
-    user_id    integer,
-    project_id integer,
-    PRIMARY KEY (user_id, project_id),
-    CONSTRAINT "FK_initiator_project.project_id"
-        FOREIGN KEY (project_id)
-            REFERENCES project (id),
-    CONSTRAINT "FK_initiator_project.user_id"
-        FOREIGN KEY (user_id)
-            REFERENCES user_t (id)
+    user_id    integer not null
+        constraint "FK_initiator_project.user_id"
+            references user_t,
+    project_id integer not null
+        constraint "FK_initiator_project.project_id"
+            references project,
+    primary key (user_id, project_id)
 );
 
-CREATE TABLE back_record
+create table back_record
 (
-    id         serial,
-    user_id    integer,
-    project_id integer,
-    amount     integer,
-    PRIMARY KEY (id),
-    CONSTRAINT "FK_back_record.project_id"
-        FOREIGN KEY (project_id)
-            REFERENCES project (id),
-    CONSTRAINT "FK_back_record.user_id"
-        FOREIGN KEY (user_id)
-            REFERENCES user_t (id)
+    id         serial
+        primary key,
+    user_id    integer
+        constraint "FK_back_record.user_id"
+            references user_t,
+    project_id integer
+        constraint "FK_back_record.project_id"
+            references project,
+    amount     integer
 );
 
-CREATE TABLE backer_project
+create table backer_project
 (
-    user_id    integer,
-    project_id integer,
-    PRIMARY KEY (user_id, project_id),
-    CONSTRAINT "FK_backer_project.project_id"
-        FOREIGN KEY (project_id)
-            REFERENCES project (id),
-    CONSTRAINT "FK_backer_project.user_id"
-        FOREIGN KEY (user_id)
-            REFERENCES user_t (id)
+    user_id    integer not null
+        constraint "FK_backer_project.user_id"
+            references user_t,
+    project_id integer not null
+        constraint "FK_backer_project.project_id"
+            references project,
+    primary key (user_id, project_id)
 );
 
