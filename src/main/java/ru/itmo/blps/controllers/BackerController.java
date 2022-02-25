@@ -1,6 +1,5 @@
 package ru.itmo.blps.controllers;
 
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
@@ -9,46 +8,34 @@ import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
 import ru.itmo.blps.DAO.mappers.UserMapper;
-import ru.itmo.blps.services.ProjectService;
+import ru.itmo.blps.controllers.inputModel.BackModel;
+import ru.itmo.blps.services.BackService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/projects")
-public class ProjectController extends BasicController {
+@RequestMapping("/backing")
+public class BackerController {
     private final ProjectMapper projectMapper;
-    private final ProjectService projectService;
     private final UserMapper userMapper;
+    private final BackService backService;
 
-    public ProjectController(ProjectMapper projectMapper, ProjectService projectService, UserMapper userMapper) {
+    public BackerController(ProjectMapper projectMapper, UserMapper userMapper, BackService backService) {
         this.projectMapper = projectMapper;
-        this.projectService = projectService;
         this.userMapper = userMapper;
+        this.backService = backService;
     }
 
-
-    @GetMapping("/")
-    List<Project> allProducts() {
-        return projectService.getAllProjects();
-    }
-
-    @GetMapping("/{id}")
-    Project getProjectById(@PathVariable Integer id) {
-        return projectMapper.findProjectById(id);
-    }
-
-    @PutMapping("/")
-    Project createProject(@RequestBody Project project) throws AuthenticationException {
+    @GetMapping("/projects/")
+    List<Project> backedProjects() {
         var user = getUserFromContext();
-        projectService.createProject(user.getId(), project);
-        return project;
+        return projectMapper.getBackedProjects(user.getId());
     }
 
-    @GetMapping("/my")
-    List<Project> myProjects() {
+    @PostMapping("/back/")
+    void backProject(@RequestBody BackModel req) {
         User user = getUserFromContext();
-
-        return projectMapper.getInitializedProjects(user.getId());
+        backService.back(req.getProjectId(), user.getId(), req.getAmount());
     }
 
     private User getUserFromContext() {

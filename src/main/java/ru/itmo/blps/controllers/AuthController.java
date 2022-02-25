@@ -15,6 +15,8 @@ import ru.itmo.blps.DAO.mappers.UserMapper;
 import ru.itmo.blps.auth.JwtResponse;
 import ru.itmo.blps.auth.JwtTokenUtil;
 
+import javax.security.auth.message.AuthException;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -53,12 +55,14 @@ public class AuthController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
     @PostMapping("/signup/")
-    User signup(@RequestBody User user) {
+    User signup(@RequestBody User user) throws AuthException {
+        if (mapper.findUserByLogin(user.getUsername()) != null) {
+            throw new AuthException("user already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         mapper.insertUser(user);
         return user;

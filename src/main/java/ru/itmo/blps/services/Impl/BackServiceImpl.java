@@ -29,6 +29,8 @@ public class BackServiceImpl implements BackService {
 
     @Override
     public int back(Integer projectId, Integer userId, Integer amount) {
+        if (amount < 0)
+            throw new ServiceException("Please give me money! Not steal mine!!!");
         Project project = projectMapper.findProjectById(projectId);
         if (project == null) throw new NoSuchProjectException("Can't find this project.");
 
@@ -44,11 +46,13 @@ public class BackServiceImpl implements BackService {
         br.setProjectId(projectId);
         br.setAmount(amount);
         int effectRow = brMapper.insertBR(br);
+        Integer new_amount = amount;
+        if (project.getCurrentAmount() != null) {
+            new_amount += project.getCurrentAmount();
+        }
 
         // Update current amount.
-        if (amount < 0)
-            throw new ServiceException("Please give me money! Not steal mine!!!");
-        projectMapper.updateCurrentMoney(projectId, amount + project.getCurrentAmount());
+        projectMapper.updateCurrentMoney(projectId, new_amount);
 
         return effectRow;
 

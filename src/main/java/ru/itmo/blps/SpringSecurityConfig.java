@@ -61,6 +61,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .authorizeRequests().
                 antMatchers("/auth**", "/auth/**").permitAll().
+                antMatchers(HttpMethod.GET, "/projects/").permitAll().
+                antMatchers(HttpMethod.GET, "/projects/{id}").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
