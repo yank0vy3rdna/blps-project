@@ -35,31 +35,10 @@ public class BasicController {
             result.setState(5002);
             result.setMessage("You can't do that. Because the state of project is wrong.");
         }
-//        else if (e instanceof NoPermissionException){
-//            result.setState(5003);
-//            result.setMessage("You have no permission to do this.");
-//        }else if (e instanceof UpdateException){
-//            result.setState(5004);
-//            result.setMessage("Can't update.");
-//        }
         return result;
     }
 
 
 
 
-//    /** Get the uid from session
-//     * @param session session object
-//     * @return recent user's id
-//     */
-//    protected final Integer getuidFromSession(HttpSession session){
-//        return Integer.valueOf(session.getAttribute("uid").toString());
-//    }
-//    /** Get the username from session
-//     * @param session session object
-//     * @return recent user's username
-//     */
-//    protected final String getUserNameFromSession(HttpSession session){
-//        return session.getAttribute("username").toString();
-//    }
 }

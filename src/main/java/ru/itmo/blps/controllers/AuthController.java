@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.UserMapper;
@@ -44,6 +45,7 @@ public class AuthController {
         }
     }
 
+    @Transactional
     @PostMapping(path = "/login/", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     ResponseEntity<?> getAuthUser(@RequestBody User user) throws Exception {
@@ -58,6 +60,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    @Transactional
     @PostMapping("/signup/")
     User signup(@RequestBody User user) throws AuthException {
         if (mapper.findUserByLogin(user.getUsername()) != null) {

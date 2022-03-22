@@ -3,6 +3,7 @@ package ru.itmo.blps.controllers;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
@@ -26,12 +27,14 @@ public class BackerController {
         this.backService = backService;
     }
 
+    @Transactional
     @GetMapping("/projects/")
     List<Project> backedProjects() {
         var user = getUserFromContext();
         return projectMapper.getBackedProjects(user.getId());
     }
 
+    @Transactional
     @PostMapping("/back/")
     void backProject(@RequestBody BackModel req) {
         User user = getUserFromContext();

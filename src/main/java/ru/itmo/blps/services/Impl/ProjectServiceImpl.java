@@ -10,7 +10,6 @@ import ru.itmo.blps.services.Exceptions.NoSuchProjectException;
 import ru.itmo.blps.services.Exceptions.NoSuchUserException;
 import ru.itmo.blps.services.Exceptions.WrongStatusException;
 import ru.itmo.blps.services.ProjectService;
-
 import java.util.List;
 
 @Service
