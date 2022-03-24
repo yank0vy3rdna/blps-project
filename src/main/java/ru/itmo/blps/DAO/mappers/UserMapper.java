@@ -1,9 +1,6 @@
 package ru.itmo.blps.DAO.mappers;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import ru.itmo.blps.DAO.entities.User;
 
 import java.util.List;
@@ -24,4 +21,7 @@ public interface UserMapper {
 
     @Select("select * from user_t")
     List<User> findAllUsers();
+
+    @Update("update user_t set role = #{role} where id = #{id}")
+    Integer setRole(Integer id, Integer role);
 }

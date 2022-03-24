@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-@Getter
-@Setter
 public class BackModel {
     private final Integer projectId;
     private final Integer amount;

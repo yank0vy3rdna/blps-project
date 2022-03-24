@@ -1,5 +1,6 @@
 package ru.itmo.blps.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,17 +16,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
-public class ProjectController extends BasicController {
+@AllArgsConstructor
+public class ProjectController {
     private final ProjectMapper projectMapper;
     private final ProjectService projectService;
     private final UserMapper userMapper;
-
-    public ProjectController(ProjectMapper projectMapper, ProjectService projectService, UserMapper userMapper) {
-        this.projectMapper = projectMapper;
-        this.projectService = projectService;
-        this.userMapper = userMapper;
-    }
-
 
     @GetMapping("/")
     List<Project> allProducts() {

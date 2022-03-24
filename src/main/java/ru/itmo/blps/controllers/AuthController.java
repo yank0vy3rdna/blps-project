@@ -1,5 +1,6 @@
 package ru.itmo.blps.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,20 +21,13 @@ import javax.security.auth.message.AuthException;
 
 @RestController
 @RequestMapping("/auth")
+@AllArgsConstructor
 public class AuthController {
     private final UserMapper mapper;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
-
-    public AuthController(UserMapper mapper, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder) {
-        this.mapper = mapper;
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.jwtTokenUtil = jwtTokenUtil;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     private void authenticate(String username, String password) throws Exception {
         try {
@@ -60,7 +54,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = AuthException.class)
     @PostMapping("/signup/")
     User signup(@RequestBody User user) throws AuthException {
         if (mapper.findUserByLogin(user.getUsername()) != null) {

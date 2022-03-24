@@ -1,5 +1,6 @@
 package ru.itmo.blps.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
@@ -16,16 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/backing")
+@AllArgsConstructor
 public class BackerController {
     private final ProjectMapper projectMapper;
     private final UserMapper userMapper;
     private final BackService backService;
-
-    public BackerController(ProjectMapper projectMapper, UserMapper userMapper, BackService backService) {
-        this.projectMapper = projectMapper;
-        this.userMapper = userMapper;
-        this.backService = backService;
-    }
 
     @Transactional
     @GetMapping("/projects/")
@@ -34,7 +30,7 @@ public class BackerController {
         return projectMapper.getBackedProjects(user.getId());
     }
 
-    @Transactional
+    @Transactional(rollbackFor = PreAuthenticatedCredentialsNotFoundException.class)
     @PostMapping("/back/")
     void backProject(@RequestBody BackModel req) {
         User user = getUserFromContext();

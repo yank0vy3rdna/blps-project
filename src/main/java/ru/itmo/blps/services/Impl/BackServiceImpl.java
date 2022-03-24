@@ -7,10 +7,10 @@ import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.BRMapper;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
 import ru.itmo.blps.DAO.mappers.UserMapper;
+import ru.itmo.blps.services.BackService;
 import ru.itmo.blps.services.Exceptions.NoSuchProjectException;
 import ru.itmo.blps.services.Exceptions.NoSuchUserException;
 import ru.itmo.blps.services.Exceptions.ServiceException;
-import ru.itmo.blps.services.BackService;
 
 @Service
 public class BackServiceImpl implements BackService {
@@ -29,13 +29,18 @@ public class BackServiceImpl implements BackService {
 
     @Override
     public int back(Integer projectId, Integer userId, Integer amount) {
-        if (amount < 0)
+        if (amount < 0) {
             throw new ServiceException("Please give me money! Not steal mine!!!");
+        }
         Project project = projectMapper.findProjectById(projectId);
-        if (project == null) throw new NoSuchProjectException("Can't find this project.");
+        if (project == null) {
+            throw new NoSuchProjectException("Can't find this project.");
+        }
 
         User user = userMapper.findUserById(userId);
-        if (user == null) throw new NoSuchUserException("No such user.");
+        if (user == null) {
+            throw new NoSuchUserException("No such user.");
+        }
 
         // Update backer list.
         projectMapper.addBacker(userId, projectId);
