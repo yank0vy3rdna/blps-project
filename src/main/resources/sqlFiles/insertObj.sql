@@ -1,4 +1,4 @@
-insert into user_t (login, password)
+insert into user_t (username, password)
 values ('Andrey', '123456'),
        ('siyuan', '123456'),
        ('sergey', '123456'),
@@ -7,8 +7,8 @@ values ('Andrey', '123456'),
 
 -- Please delete field initiator_id in table project.
 -- We have initiator_project so we don't need that field.
-alter table project
-    drop column initiator_id;
+-- alter table project
+--     drop column initiator_id;
 
 
 -- I think project at the least need name and description.

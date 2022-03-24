@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into user_t(username,password) values (#{username},#{password})")
+    @Insert("insert into user_t(username,password, role) values (#{username},#{password}, #{role})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void insertUser(User user);
 
