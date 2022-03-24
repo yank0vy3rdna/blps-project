@@ -1,6 +1,7 @@
 package ru.itmo.blps.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,8 +11,10 @@ import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
 import ru.itmo.blps.DAO.mappers.UserMapper;
+import ru.itmo.blps.auth.AuthCheck;
 import ru.itmo.blps.services.ProjectService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -20,7 +23,7 @@ import java.util.List;
 public class ProjectController {
     private final ProjectMapper projectMapper;
     private final ProjectService projectService;
-    private final UserMapper userMapper;
+    private final AuthCheck authCheck;
 
     @GetMapping("/")
     List<Project> allProducts() {
@@ -33,28 +36,17 @@ public class ProjectController {
     }
 
     @PutMapping("/")
-    Project createProject(@RequestBody Project project) throws AuthenticationException {
-        var user = getUserFromContext();
+    Project createProject(@RequestBody Project project, Authentication authentication) throws AuthenticationException {
+        User user = authCheck.authCheck(authentication, 0);
+
         projectService.createProject(user.getId(), project);
         return project;
     }
 
     @GetMapping("/my")
-    List<Project> myProjects() {
-        User user = getUserFromContext();
+    List<Project> myProjects(Authentication authentication) {
+        User user = authCheck.authCheck(authentication, 0);
 
         return projectMapper.getInitializedProjects(user.getId());
-    }
-
-    private User getUserFromContext() {
-        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal == null) {
-            throw new PreAuthenticatedCredentialsNotFoundException("auth error");
-        }
-        if (!(principal instanceof UserDetails)) {
-            throw new PreAuthenticatedCredentialsNotFoundException("principal is not user");
-        }
-        UserDetails userDetails = (UserDetails) principal;
-        return userMapper.findUserByLogin(userDetails.getUsername());
     }
 }

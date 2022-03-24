@@ -1,6 +1,7 @@
 package ru.itmo.blps.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
@@ -10,6 +11,7 @@ import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
 import ru.itmo.blps.DAO.mappers.UserMapper;
+import ru.itmo.blps.auth.AuthCheck;
 import ru.itmo.blps.controllers.inputModel.BackModel;
 import ru.itmo.blps.services.BackService;
 
@@ -20,32 +22,21 @@ import java.util.List;
 @AllArgsConstructor
 public class BackerController {
     private final ProjectMapper projectMapper;
-    private final UserMapper userMapper;
     private final BackService backService;
+    private final AuthCheck authCheck;
 
     @Transactional
     @GetMapping("/projects/")
-    List<Project> backedProjects() {
-        var user = getUserFromContext();
+    List<Project> backedProjects(Authentication authentication) {
+        User user = authCheck.authCheck(authentication, 0);
         return projectMapper.getBackedProjects(user.getId());
     }
 
     @Transactional(rollbackFor = PreAuthenticatedCredentialsNotFoundException.class)
     @PostMapping("/back/")
-    void backProject(@RequestBody BackModel req) {
-        User user = getUserFromContext();
+    void backProject(@RequestBody BackModel req, Authentication authentication) {
+        User user = authCheck.authCheck(authentication, 0);
         backService.back(req.getProjectId(), user.getId(), req.getAmount());
     }
 
-    private User getUserFromContext() {
-        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal == null) {
-            throw new PreAuthenticatedCredentialsNotFoundException("auth error");
-        }
-        if (!(principal instanceof UserDetails)) {
-            throw new PreAuthenticatedCredentialsNotFoundException("principal is not user");
-        }
-        UserDetails userDetails = (UserDetails) principal;
-        return userMapper.findUserByLogin(userDetails.getUsername());
-    }
 }
