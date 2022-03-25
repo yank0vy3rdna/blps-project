@@ -3,6 +3,7 @@ package ru.itmo.blps.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -17,6 +18,7 @@ import ru.itmo.blps.DAO.mappers.UserMapper;
 import ru.itmo.blps.auth.JwtResponse;
 import ru.itmo.blps.auth.JwtTokenUtil;
 
+import javax.annotation.security.RolesAllowed;
 import javax.security.auth.message.AuthException;
 
 @RestController
@@ -41,6 +43,7 @@ public class AuthController {
 
     @Transactional
     @PostMapping(path = "/login/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Secured("ANONYMOUS")
     public @ResponseBody
     ResponseEntity<?> getAuthUser(@RequestBody User user) throws Exception {
 
