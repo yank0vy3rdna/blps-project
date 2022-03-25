@@ -30,14 +30,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException(String.format("User %s is not found", username));
             }
             if (u.getRole() == 1) {
-                authorities.add(new SimpleGrantedAuthority("ADMIN"));
+                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
             } else {
-                authorities.add(new SimpleGrantedAuthority("REGULAR"));
+                authorities.add(new SimpleGrantedAuthority("ROLE_REGULAR"));
             }
             return new org.springframework.security.core.userdetails.User(u.getUsername(), u.getPassword(), true, true, true, true, authorities);
         }
-        authorities.add(new SimpleGrantedAuthority("ANONYMOUS"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
 
         return new org.springframework.security.core.userdetails.User("anon", "anon", true, true, true, true, authorities);
     }

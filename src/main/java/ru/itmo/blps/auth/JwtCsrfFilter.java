@@ -28,12 +28,10 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
-    private final AnonymousAuthenticationFilter anonymousAuthenticationFilter;
 
     public JwtCsrfFilter(JwtTokenUtil jwtTokenUtil, UserDetailsService userDetailsService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
-        this.anonymousAuthenticationFilter = new AnonymousAuthenticationFilter("key");
     }
 
     @Override

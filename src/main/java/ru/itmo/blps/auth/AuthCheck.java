@@ -17,7 +17,8 @@ public class AuthCheck {
         this.userMapper = userMapper;
     }
 
-    public User authCheck(Authentication authentication, int role){
+    public User authCheck(Authentication authentication, int role) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         if (principal == null) {
             throw new PreAuthenticatedCredentialsNotFoundException("auth error");
@@ -27,7 +28,7 @@ public class AuthCheck {
         }
         UserDetails userDetails = (UserDetails) principal;
         User user = userMapper.findUserByLogin(userDetails.getUsername());
-        if (user.getRole() != role){
+        if (user.getRole() != role) {
             throw new PreAuthenticatedCredentialsNotFoundException("wrong role");
         }
         return user;

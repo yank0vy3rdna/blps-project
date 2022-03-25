@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -23,6 +24,7 @@ import javax.security.auth.message.AuthException;
 
 @RestController
 @RequestMapping("/auth")
+@PreAuthorize("hasAnyRole('ROLE_REGULAR','ROLE_ADMIN','ROLE_ANONYMOUS')")
 @AllArgsConstructor
 public class AuthController {
     private final UserMapper mapper;
@@ -43,7 +45,7 @@ public class AuthController {
 
     @Transactional
     @PostMapping(path = "/login/", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured("ANONYMOUS")
+    @Secured({"ROLE_ANONYMOUS"})
     public @ResponseBody
     ResponseEntity<?> getAuthUser(@RequestBody User user) throws Exception {
 
@@ -59,6 +61,7 @@ public class AuthController {
 
     @Transactional(rollbackFor = AuthException.class)
     @PostMapping("/signup/")
+    @Secured({"ROLE_ANONYMOUS"})
     User signup(@RequestBody User user) throws AuthException {
         if (mapper.findUserByLogin(user.getUsername()) != null) {
             throw new AuthException("user already exists");

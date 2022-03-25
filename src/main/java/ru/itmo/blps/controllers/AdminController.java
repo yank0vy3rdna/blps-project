@@ -1,6 +1,7 @@
 package ru.itmo.blps.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ import java.security.AccessControlException;
  */
 @RestController
 @RequestMapping("/admin")
+@Secured({"ROLE_ADMIN"})
 @AllArgsConstructor
 public class AdminController {
     private final ProjectMapper projectMapper;

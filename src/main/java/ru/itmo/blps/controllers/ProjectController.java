@@ -1,6 +1,7 @@
 package ru.itmo.blps.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,16 +27,19 @@ public class ProjectController {
     private final AuthCheck authCheck;
 
     @GetMapping("/")
+    @Secured({"ROLE_ANONYMOUS", "ROLE_REGULAR"})
     List<Project> allProducts() {
         return projectService.getAllProjects();
     }
 
     @GetMapping("/{id}")
+    @Secured({"ROLE_ANONYMOUS", "ROLE_REGULAR"})
     Project getProjectById(@PathVariable Integer id) {
         return projectMapper.findProjectById(id);
     }
 
     @PutMapping("/")
+    @Secured({"ROLE_REGULAR"})
     Project createProject(@RequestBody Project project, Authentication authentication) throws AuthenticationException {
         User user = authCheck.authCheck(authentication, 0);
 
@@ -44,6 +48,7 @@ public class ProjectController {
     }
 
     @GetMapping("/my")
+    @Secured({"ROLE_REGULAR"})
     List<Project> myProjects(Authentication authentication) {
         User user = authCheck.authCheck(authentication, 0);
 

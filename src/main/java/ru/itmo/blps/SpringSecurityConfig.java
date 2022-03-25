@@ -22,7 +22,7 @@ import ru.itmo.blps.auth.JwtCsrfFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -64,9 +64,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable().anonymous().authorities("ANONYMOUS").and()
                 // dont authenticate this particular request
                 .authorizeRequests().
-//                antMatchers("/auth**", "/auth/**").permitAll().
-//                antMatchers(HttpMethod.GET, "/projects/").permitAll().
-//                antMatchers(HttpMethod.GET, "/projects/{id}").permitAll().
+                antMatchers("/auth**", "/auth/**").permitAll().
+                antMatchers(HttpMethod.GET, "/projects/").permitAll().
+                antMatchers(HttpMethod.GET, "/projects/{id}").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
