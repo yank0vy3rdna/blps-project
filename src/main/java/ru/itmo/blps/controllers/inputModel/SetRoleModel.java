@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class SetRoleModel {
     private final Integer userId;
-    private final Integer Role;
+    private final Integer role;
 }

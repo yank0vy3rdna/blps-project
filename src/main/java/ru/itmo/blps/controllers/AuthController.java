@@ -24,7 +24,6 @@ import javax.security.auth.message.AuthException;
 
 @RestController
 @RequestMapping("/auth")
-@PreAuthorize("hasAnyRole('ROLE_REGULAR','ROLE_ADMIN','ROLE_ANONYMOUS')")
 @AllArgsConstructor
 public class AuthController {
     private final UserMapper mapper;
@@ -45,8 +44,8 @@ public class AuthController {
 
     @Transactional
     @PostMapping(path = "/login/", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Secured({"ROLE_ANONYMOUS"})
     public @ResponseBody
+    @Secured({"ROLE_ANONYMOUS"})
     ResponseEntity<?> getAuthUser(@RequestBody User user) throws Exception {
 
         authenticate(user.getUsername(), user.getPassword());

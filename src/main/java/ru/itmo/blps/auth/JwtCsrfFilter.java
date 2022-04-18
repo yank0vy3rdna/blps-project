@@ -42,26 +42,17 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
         String jwtToken = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
-            }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+            username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         }
 
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (userDetails.getUsername().equals("anon")) {
-                SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken(
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                         "anon", userDetails, userDetails.getAuthorities()
                 ));
             } else if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken

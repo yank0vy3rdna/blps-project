@@ -22,28 +22,19 @@ import ru.itmo.blps.auth.JwtCsrfFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private final UserDetailsService jwtUserDetailsService;
 
     private final JwtCsrfFilter jwtRequestFilter;
-    private final AuthenticationManagerBuilder auth;
+    private final UserDetailsService userDetailsService;
 
     public SpringSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserDetailsService jwtUserDetailsService, JwtCsrfFilter jwtRequestFilter, AuthenticationManagerBuilder auth) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
-        this.auth = auth;
-    }
-
-    public void configureGlobal() throws Exception {
-        // configure AuthenticationManager so that it knows from where to load
-        // user for matching credentials
-        // Use BCryptPasswordEncoder
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+        this.userDetailsService = jwtUserDetailsService;
     }
 
     @Bean
@@ -58,30 +49,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-
-        // We don't need CSRF for this example
-        httpSecurity.csrf().disable().anonymous().authorities("ANONYMOUS").and()
-                // dont authenticate this particular request
-                .authorizeRequests().
-                antMatchers("/auth**", "/auth/**").permitAll().
-                antMatchers(HttpMethod.GET, "/projects/").permitAll().
-                antMatchers(HttpMethod.GET, "/projects/{id}").permitAll().
-                // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
-                // make sure we use stateless session; session won't be used to
-                // store user's state.
-                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
-
-        // Add a filter to validate the tokens with every request
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    public UserDetailsService userDetailsService(){
+        return this.userDetailsService;
     }
 
     @Override
-    public void configure(WebSecurity webSecurity) {
-//        webSecurity.ignoring()
-//                .antMatchers(HttpMethod.POST, "/auth/login").and().ignoring()
-//                .antMatchers(HttpMethod.POST, "/auth/signup");
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf().disable().httpBasic().disable()
+                .anonymous().authorities("ROLE_ANONYMOUS").and()
+                .authorizeRequests().
+                        anyRequest().authenticated().and().
+                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
 }

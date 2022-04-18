@@ -4,18 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
 import ru.itmo.blps.DAO.mappers.UserMapper;
-import ru.itmo.blps.auth.AuthCheck;
 import ru.itmo.blps.services.ProjectService;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -24,7 +19,7 @@ import java.util.List;
 public class ProjectController {
     private final ProjectMapper projectMapper;
     private final ProjectService projectService;
-    private final AuthCheck authCheck;
+    private final UserMapper userMapper;
 
     @GetMapping("/")
     @Secured({"ROLE_ANONYMOUS", "ROLE_REGULAR"})
@@ -41,8 +36,7 @@ public class ProjectController {
     @PutMapping("/")
     @Secured({"ROLE_REGULAR"})
     Project createProject(@RequestBody Project project, Authentication authentication) throws AuthenticationException {
-        User user = authCheck.authCheck(authentication, 0);
-
+        User user = userMapper.findUserByLogin(authentication.getName());
         projectService.createProject(user.getId(), project);
         return project;
     }
@@ -50,8 +44,7 @@ public class ProjectController {
     @GetMapping("/my")
     @Secured({"ROLE_REGULAR"})
     List<Project> myProjects(Authentication authentication) {
-        User user = authCheck.authCheck(authentication, 0);
-
+        User user = userMapper.findUserByLogin(authentication.getName());
         return projectMapper.getInitializedProjects(user.getId());
     }
 }
