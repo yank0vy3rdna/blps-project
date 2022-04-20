@@ -11,7 +11,7 @@ public interface UserMapper {
 
     @Insert("insert into user_t(username,password, role) values (#{username},#{password}, #{role})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    void insertUser(User user);
+    Integer insertUser(User user);
 
     @Select("select * from user_t where id = #{id}")
     User findUserById(Integer id);

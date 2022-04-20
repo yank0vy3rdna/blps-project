@@ -48,7 +48,7 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            if (userDetails.getUsername().equals("anon")) {
+            if ("anon".equals(userDetails.getUsername())) {
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
                         "anon", userDetails, userDetails.getAuthorities()
                 ));
