@@ -41,7 +41,7 @@ public class AuthController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-
+    
     @Transactional
     @PostMapping(path = "/login/", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody

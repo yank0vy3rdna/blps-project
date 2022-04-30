@@ -1,5 +1,7 @@
 package ru.itmo.blps.services;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+
 public interface BackService {
-    int back(Integer projectId, Integer userId, Integer amount);
+    int back(ConsumerRecord<String, String> bookConsumerRecord);
 }

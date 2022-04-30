@@ -12,7 +12,11 @@
     <artifactId>blps</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>blps</name>
-    <description>Andrey &amp; Siyuan BLPS Lab</description>
+    <description>Andrey &amp; Siyuan BLPS Lab
+        Variant for lab 1: 2013
+        Variant for lab 2: 2023
+        Variant for lab 3: 1804
+    </description>
     <properties>
         <java.version>11</java.version>
     </properties>

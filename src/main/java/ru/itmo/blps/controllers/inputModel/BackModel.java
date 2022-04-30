@@ -8,4 +8,5 @@ import lombok.Setter;
 public class BackModel {
     private final Integer projectId;
     private final Integer amount;
+    private final String backerUsername;
 }
