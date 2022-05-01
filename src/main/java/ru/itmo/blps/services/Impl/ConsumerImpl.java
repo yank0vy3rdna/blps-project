@@ -36,10 +36,14 @@ public class ConsumerImpl implements BackService {
 
     @Override
     @KafkaListener(topics = "back")
-    public int back(ConsumerRecord<String, String> bookConsumerRecord) {
+    public int back(ConsumerRecord<String, Object> bookConsumerRecord) {
 
         try {
-            BackModel bm = objectMapper.readValue(bookConsumerRecord.value(), BackModel.class);
+            /*
+            Problem is here!!!
+             */
+            System.out.println("Gooooooooooooooooood!!!!!!!! Problem is here!!!!" + bookConsumerRecord.value().toString());
+            BackModel bm = objectMapper.readValue(bookConsumerRecord.value().toString(), BackModel.class);
             logger.info("Received message: " + bookConsumerRecord.value());
             Integer projectId = bm.getProjectId();
             Integer amount = bm.getAmount();
@@ -66,7 +70,7 @@ public class ConsumerImpl implements BackService {
             br.setUserId(userId);
             br.setProjectId(projectId);
             br.setAmount(amount);
-            int effectRow = brMapper.insertBR(br);
+            int effectRows = brMapper.insertBR(br);
             Integer new_amount = amount;
             if (project.getCurrentAmount() != null) {
                 new_amount += project.getCurrentAmount();
@@ -75,7 +79,7 @@ public class ConsumerImpl implements BackService {
             // Update current amount.
             projectMapper.updateCurrentMoney(projectId, new_amount);
 
-            return effectRow;
+            return effectRows;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

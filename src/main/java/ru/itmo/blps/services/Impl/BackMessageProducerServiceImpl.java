@@ -32,7 +32,7 @@ public class BackMessageProducerServiceImpl implements BackMessageProducerServic
                         obj);
 
 
-        ListenableFuture<SendResult<String, Object>> future = kafkaTemplate.send(topic, producerRecord);
+        ListenableFuture<SendResult<String, Object>> future = kafkaTemplate.send(topic, producerRecord.toString());
         // send backing message asynchronously
         future.addCallback(
                 result -> logger.info("Producer successfully send to" + topic + "-> " + result.getRecordMetadata().topic(), result.getRecordMetadata().partition()),
