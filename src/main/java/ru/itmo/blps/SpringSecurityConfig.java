@@ -26,8 +26,6 @@ import ru.itmo.blps.auth.JwtCsrfFilter;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-
     private final JwtCsrfFilter jwtRequestFilter;
     private final UserDetailsService userDetailsService;
 
