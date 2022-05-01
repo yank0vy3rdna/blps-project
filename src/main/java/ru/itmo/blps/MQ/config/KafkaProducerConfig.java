@@ -11,6 +11,9 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.converter.RecordMessageConverter;
+import org.springframework.kafka.support.converter.StringJsonMessageConverter;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +50,7 @@ public class KafkaProducerConfig {
 
     @Bean
     public NewTopic topic() {
-        return TopicBuilder.name("back_request")
+        return TopicBuilder.name("back")
                 .partitions(10)
                 .replicas(1)
                 .build();

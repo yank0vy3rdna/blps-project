@@ -1,5 +1,6 @@
 package ru.itmo.blps.services.Impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
@@ -7,14 +8,10 @@ import ru.itmo.blps.services.Exceptions.NoSuchProjectException;
 import ru.itmo.blps.services.AdminService;
 
 @Service
+@AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
-
     private final ProjectMapper projectMapper;
-
-    public AdminServiceImpl(ProjectMapper projectMapper) {
-        this.projectMapper = projectMapper;
-    }
 
     @Override
     public int setStatus(Integer pid, Integer statusCode) {

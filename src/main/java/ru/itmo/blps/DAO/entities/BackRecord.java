@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BackRecord implements Serializable {
+public class BackRecord {
     private Integer id;
     private Integer userId;
     private Integer projectId;

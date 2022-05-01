@@ -3,6 +3,7 @@ package ru.itmo.blps.services.Impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -23,13 +24,15 @@ import ru.itmo.blps.services.Exceptions.ServiceException;
 
 @Service
 @Data
+@AllArgsConstructor
 public class ConsumerImpl implements BackService {
 
     private final BRMapper brMapper;
     private final ProjectMapper projectMapper;
     private final UserMapper userMapper;
-    private final Logger logger = LoggerFactory.getLogger(ConsumerImpl.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final Logger logger = LoggerFactory.getLogger(ConsumerImpl.class);
 
     @Override
     @KafkaListener(topics = "back")

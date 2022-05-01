@@ -1,5 +1,6 @@
 package ru.itmo.blps.services.Impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
@@ -11,15 +12,11 @@ import ru.itmo.blps.services.Exceptions.ServiceException;
 import ru.itmo.blps.services.InitiatorService;
 
 @Service
+@AllArgsConstructor
 public class InitiatorServiceImpl implements InitiatorService {
 
     private final ProjectMapper projectMapper;
     private final UserMapper userMapper;
-
-    public InitiatorServiceImpl(ProjectMapper projectMapper, UserMapper userMapper) {
-        this.projectMapper = projectMapper;
-        this.userMapper = userMapper;
-    }
 
     @Override
     public void takeMoney(Integer uid, Integer pid, Integer amount) {
