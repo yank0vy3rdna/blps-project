@@ -15,6 +15,8 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import ru.itmo.blps.MQ.serializer.BackModelJsonDeserializer;
+import ru.itmo.blps.controllers.inputModel.BackModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,22 +44,23 @@ public class KafkaConsumerConfig {
 
     @Bean
     public Map<String, Object> consumerConfigs() {
+
         Map<String, Object> propsMap = new HashMap<>();
         propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS_CONFIG);
         propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
         propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
         propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        propsMap.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, BackModelJsonDeserializer.class); // Use our own Deserializer
         propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, "group1");
         propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return propsMap;
     }
 
-    @Bean
-    public MyKafkaListener listener() {
-        return new MyKafkaListener();
-    }
+//    @Bean
+//    public MyKafkaListener listener() {
+//        return new MyKafkaListener();
+//    }
 
 
 }

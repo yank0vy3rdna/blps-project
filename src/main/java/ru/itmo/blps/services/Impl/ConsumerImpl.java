@@ -36,52 +36,49 @@ public class ConsumerImpl implements BackService {
 
     @Override
     @KafkaListener(topics = "back")
-    public int back(ConsumerRecord<String, Object> bookConsumerRecord) {
+    public int back(ConsumerRecord<String, Object> backConsumerRecord) {
 
-        try {
-            /*
-            Problem is here!!!
-             */
-            System.out.println("Gooooooooooooooooood!!!!!!!! Problem is here!!!!" + bookConsumerRecord.value().toString());
-            BackModel bm = objectMapper.readValue(bookConsumerRecord.value().toString(), BackModel.class);
-            logger.info("Received message: " + bookConsumerRecord.value());
-            Integer projectId = bm.getProjectId();
-            Integer amount = bm.getAmount();
-            String username = bm.getBackerUsername();
-            if (amount < 0) {
-                throw new ServiceException("Please give me money! Not steal mine!!!");
-            }
-            Project project = projectMapper.findProjectById(projectId);
-            if (project == null) {
-                throw new NoSuchProjectException("Can't find this project.");
-            }
-
-            User user = userMapper.findUserByLogin(username);
-            if (user == null) {
-                throw new NoSuchUserException("No such user.");
-            }
-            Integer userId = user.getId();
-
-            // Update backer list.
-            projectMapper.addBacker(userId, projectId);
-
-            // Insert back record.
-            BackRecord br = new BackRecord();
-            br.setUserId(userId);
-            br.setProjectId(projectId);
-            br.setAmount(amount);
-            int effectRows = brMapper.insertBR(br);
-            Integer new_amount = amount;
-            if (project.getCurrentAmount() != null) {
-                new_amount += project.getCurrentAmount();
-            }
-
-            // Update current amount.
-            projectMapper.updateCurrentMoney(projectId, new_amount);
-
-            return effectRows;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        /*
+        Problem is here!!!
+         */
+        logger.info("Consumer received: " + backConsumerRecord.toString());
+//            BackModel bm = objectMapper.readValue(backConsumerRecord.value(), BackModel.class);
+        BackModel bm = (BackModel) backConsumerRecord.value();
+        logger.info("Received message: " + backConsumerRecord.value());
+        Integer projectId = bm.getProjectId();
+        Integer amount = bm.getAmount();
+        String username = bm.getBackerUsername();
+        if (amount < 0) {
+            throw new ServiceException("Please give me money! Not steal mine!!!");
         }
+        Project project = projectMapper.findProjectById(projectId);
+        if (project == null) {
+            throw new NoSuchProjectException("Can't find this project.");
+        }
+
+        User user = userMapper.findUserByLogin(username);
+        if (user == null) {
+            throw new NoSuchUserException("No such user.");
+        }
+        Integer userId = user.getId();
+
+        // Update backer list.
+        projectMapper.addBacker(userId, projectId);
+
+        // Insert back record.
+        BackRecord br = new BackRecord();
+        br.setUserId(userId);
+        br.setProjectId(projectId);
+        br.setAmount(amount);
+        int effectRows = brMapper.insertBR(br);
+        Integer new_amount = amount;
+        if (project.getCurrentAmount() != null) {
+            new_amount += project.getCurrentAmount();
+        }
+
+        // Update current amount.
+        projectMapper.updateCurrentMoney(projectId, new_amount);
+
+        return effectRows;
     }
 }
