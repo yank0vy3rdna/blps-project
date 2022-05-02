@@ -57,10 +57,5 @@ public class KafkaConsumerConfig {
         return propsMap;
     }
 
-//    @Bean
-//    public MyKafkaListener listener() {
-//        return new MyKafkaListener();
-//    }
-
 
 }

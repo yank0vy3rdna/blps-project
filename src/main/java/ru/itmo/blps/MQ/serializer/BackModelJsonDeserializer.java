@@ -10,6 +10,7 @@ import ru.itmo.blps.controllers.inputModel.BackModel;
 
 import java.util.Map;
 
+// // Deserialize JSON to BackModel by fastjson.
 public class BackModelJsonDeserializer implements Deserializer<BackModel> {
 
     private static final Logger logger = LoggerFactory.getLogger(BackModelJsonDeserializer.class);

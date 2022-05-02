@@ -26,6 +26,9 @@ public interface BRMapper {
     @Select("select * from back_record where project_id = #{pid}")
     BackRecord findBRByPID(Integer pid);
 
+    @Select("select 1 from backer_project where user_id = #{uid} and project_id = #{pid}")
+    Integer findBPByUserIdAndProjectId(Integer uid, Integer pid);
+
     @Select("select * from back_record where amount = #{amount}")
     BackRecord findBRByAmount(Integer amount);
 

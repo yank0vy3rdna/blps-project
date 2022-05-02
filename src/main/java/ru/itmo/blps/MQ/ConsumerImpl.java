@@ -1,8 +1,5 @@
-package ru.itmo.blps.services.Impl;
+package ru.itmo.blps.MQ;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -27,24 +24,21 @@ import ru.itmo.blps.services.Exceptions.ServiceException;
 @AllArgsConstructor
 public class ConsumerImpl implements BackService {
 
+    private final Logger logger = LoggerFactory.getLogger(ConsumerImpl.class);
+
     private final BRMapper brMapper;
     private final ProjectMapper projectMapper;
     private final UserMapper userMapper;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    private final Logger logger = LoggerFactory.getLogger(ConsumerImpl.class);
 
     @Override
     @KafkaListener(topics = "back")
     public int back(ConsumerRecord<String, Object> backConsumerRecord) {
 
-        /*
-        Problem is here!!!
-         */
         logger.info("Consumer received: " + backConsumerRecord.toString());
-//            BackModel bm = objectMapper.readValue(backConsumerRecord.value(), BackModel.class);
+
+        // Get back model from ConsumerRecord
         BackModel bm = (BackModel) backConsumerRecord.value();
-        logger.info("Received message: " + backConsumerRecord.value());
+
         Integer projectId = bm.getProjectId();
         Integer amount = bm.getAmount();
         String username = bm.getBackerUsername();
@@ -62,8 +56,13 @@ public class ConsumerImpl implements BackService {
         }
         Integer userId = user.getId();
 
-        // Update backer list.
-        projectMapper.addBacker(userId, projectId);
+
+
+        var OldBR = brMapper.findBPByUserIdAndProjectId(userId, projectId);
+        if (OldBR == null) {
+            // Update backer list. Only if the backer never backed this project before.
+            projectMapper.addBacker(userId, projectId);
+        }
 
         // Insert back record.
         BackRecord br = new BackRecord();

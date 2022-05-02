@@ -6,14 +6,9 @@ import java.io.Serializable;
 
 @Data
 @ToString
+@AllArgsConstructor
 public class BackModel {
     private final Integer projectId;
     private final Integer amount;
     private final String backerUsername;
-
-    public BackModel(Integer projectId, Integer amount, String backerUsername) {
-        this.projectId = projectId;
-        this.amount = amount;
-        this.backerUsername = backerUsername;
-    }
 }

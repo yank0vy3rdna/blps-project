@@ -13,9 +13,8 @@ import ru.itmo.blps.DAO.entities.User;
 import ru.itmo.blps.DAO.mappers.ProjectMapper;
 import ru.itmo.blps.DAO.mappers.UserMapper;
 import ru.itmo.blps.controllers.inputModel.BackModel;
+import ru.itmo.blps.controllers.inputModel.BackRequestModel;
 import ru.itmo.blps.services.BackMessageProducerService;
-import ru.itmo.blps.services.BackService;
-import ru.itmo.blps.services.Impl.BackMessageProducerServiceImpl;
 
 import java.util.List;
 
@@ -41,12 +40,14 @@ public class BackerController {
     @Secured({"ROLE_REGULAR"})
     @Transactional(rollbackFor = PreAuthenticatedCredentialsNotFoundException.class)
     @PostMapping("/back/")
-    void backProject(@RequestBody BackModel req) {
-        // User user = userMapper.findUserByLogin(authentication.getName());
+    void backProject(@RequestBody BackRequestModel req, Authentication authentication) {
 
+        logger.info("Got Request. Backer \"{}\" backing project \"{}\"", authentication.getName(), req.getProjectId());
+
+        // Make sure that user can only back project as himself.
+        BackModel backModel = new BackModel(req.getProjectId(), req.getAmount(), authentication.getName());
         // We should set backer id in BackModel too.
-        logger.info("Well at the least I'm here. Backer {} backing project {}", req.getBackerUsername(), req.getProjectId());
-        backMessageProducerService.sendBackMessage("back", req);
+        backMessageProducerService.sendBackMessage("back", backModel);
     }
 
 }
