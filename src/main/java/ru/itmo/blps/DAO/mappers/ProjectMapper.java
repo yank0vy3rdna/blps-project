@@ -27,7 +27,7 @@ public interface ProjectMapper {
     @Select("select * from user_t inner join backer_project bp on user_t.id = bp.user_id where project_id = #{project_id}")
     List<User> getBackers(Integer project_id);
 
-    @Select("select * from project inner join backer_project bp on project.id = bp.project_id where user_id = #{user_id}")
+    @Select("select id, name, target_amount as \"targetAmount\", status, current_amount as \"currentAmount\", description from project inner join backer_project bp on project.id = bp.project_id where user_id = #{user_id}")
     List<Project> getBackedProjects(Integer user_id);
 
     @Select("select * from project inner join initiator_project bp on project.id = bp.project_id where user_id = #{user_id}")
