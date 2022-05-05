@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.blps.DAO.entities.BackRecord;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;
@@ -32,6 +33,7 @@ public class ConsumerImpl implements BackService {
 
     @Override
     @KafkaListener(topics = "back")
+    @Transactional
     public int back(ConsumerRecord<String, Object> backConsumerRecord) {
 
         logger.info("Consumer received: " + backConsumerRecord.toString());
