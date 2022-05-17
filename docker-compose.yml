@@ -9,3 +9,8 @@ services:
       POSTGRES_DB: blps
     ports:
       - "5432:5432"
+  camunda:
+    image: camunda/camunda-bpm-platform:run-latest
+    ports:
+      - "9000:8080"
+#

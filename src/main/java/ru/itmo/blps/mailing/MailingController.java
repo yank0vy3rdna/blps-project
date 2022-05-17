@@ -18,11 +18,13 @@ public class MailingController {
     private final ProjectMapper projectMapper;
 
     //    @Scheduled(cron = "0 20 * * *")
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 1000*10)
     public void mailAboutProjectStatus() {
         List<User> users = userMapper.findAllUsers();
         for (User user : users) {
             List<Project> projects = projectMapper.getBackedProjects(user.getId());
+            if (projects.isEmpty())
+                continue;
             StringBuilder messageBuilder = new StringBuilder();
             messageBuilder.append("Message to user: ");
             messageBuilder.append(user.getUsername());
@@ -36,5 +38,6 @@ public class MailingController {
             }
             System.out.println(messageBuilder);
         }
+        System.out.println("\n------------------------------------------------------------\n\n");
     }
 }
