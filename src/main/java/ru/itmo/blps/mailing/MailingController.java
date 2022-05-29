@@ -18,7 +18,7 @@ public class MailingController {
     private final ProjectMapper projectMapper;
 
     //    @Scheduled(cron = "0 20 * * *")
-    @Scheduled(fixedRate = 1000*10)
+//    @Scheduled(fixedRate = 1000*10)
     public void mailAboutProjectStatus() {
         List<User> users = userMapper.findAllUsers();
         for (User user : users) {

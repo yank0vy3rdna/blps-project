@@ -1,6 +1,7 @@
 package ru.itmo.blps.services.Impl;
 
 import lombok.AllArgsConstructor;
+import org.camunda.bpm.client.spring.annotation.EnableExternalTaskClient;
 import org.springframework.stereotype.Service;
 import ru.itmo.blps.DAO.entities.Project;
 import ru.itmo.blps.DAO.entities.User;

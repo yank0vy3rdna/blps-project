@@ -62,6 +62,7 @@ public class AuthController {
     @PostMapping("/signup/")
     @Secured({"ROLE_ANONYMOUS"})
     User signup(@RequestBody User user) throws AuthException {
+
         if (mapper.findUserByLogin(user.getUsername()) != null) {
             throw new AuthException("user already exists");
         }
