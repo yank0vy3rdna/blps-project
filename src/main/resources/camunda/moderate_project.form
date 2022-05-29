@@ -1,0 +1,52 @@
+{
+  "components": [
+    {
+      "label": "Name",
+      "type": "textfield",
+      "id": "Field_1mou33q",
+      "key": "project_name",
+      "disabled": true
+    },
+    {
+      "label": "Description",
+      "type": "textfield",
+      "id": "Field_0mj5r71",
+      "key": "project_description",
+      "disabled": true
+    },
+    {
+      "label": "Target amount",
+      "type": "number",
+      "id": "Field_0y0jhw5",
+      "key": "project_target_amount",
+      "disabled": true
+    },
+    {
+      "text": "Check if project with parameters above fits the norms",
+      "type": "text",
+      "id": "Field_0nb7thi"
+    },
+    {
+      "label": "Allow publication",
+      "type": "checkbox",
+      "id": "Field_1dzunjd",
+      "key": "allow_publication"
+    },
+    {
+      "action": "submit",
+      "label": "Submit",
+      "type": "button",
+      "id": "Field_0ck5wbq",
+      "key": "field_0l8bjwx"
+    }
+  ],
+  "type": "default",
+  "id": "moderateProject",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "schemaVersion": 4
+}

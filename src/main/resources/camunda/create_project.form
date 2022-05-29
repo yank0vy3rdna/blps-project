@@ -1,0 +1,48 @@
+{
+  "components": [
+    {
+      "label": "Name",
+      "type": "textfield",
+      "id": "Field_0roxbm0",
+      "key": "project_name",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Description",
+      "type": "textfield",
+      "id": "Field_0ns3ulj",
+      "key": "project_description",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Target amount",
+      "type": "number",
+      "id": "Field_14wnpth",
+      "key": "project_target_amount",
+      "validate": {
+        "required": true
+      },
+      "defaultValue": 100
+    },
+    {
+      "action": "submit",
+      "label": "Submit",
+      "type": "button",
+      "id": "Field_1thykw9",
+      "key": "field_18uavvu"
+    }
+  ],
+  "type": "default",
+  "id": "createProject",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.0.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "schemaVersion": 4
+}

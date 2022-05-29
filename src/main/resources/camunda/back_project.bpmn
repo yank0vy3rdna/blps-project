@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1wt8qve" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
+  <bpmn:collaboration id="Collaboration_1b67mxw">
+    <bpmn:participant id="Participant_0s7ph9u" name="back project" processRef="backProject" />
+  </bpmn:collaboration>
+  <bpmn:process id="backProject" name="backProject" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_1m8dsw8">
+      <bpmn:lane id="Lane_0dvw1uu" name="User">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1uifhab" name="Spring application">
+        <bpmn:flowNodeRef>Activity_1uy0edx</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1ovv74s</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1" camunda:formRef="backProject" camunda:formRefBinding="latest" camunda:initiator="userId">
+      <bpmn:outgoing>Flow_0tdoya6</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_1uy0edx" name="Back project service" camunda:type="external" camunda:topic="backProject">
+      <bpmn:incoming>Flow_0tdoya6</bpmn:incoming>
+      <bpmn:outgoing>Flow_0nhj3yo</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1ovv74s">
+      <bpmn:incoming>Flow_0nhj3yo</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0tdoya6" sourceRef="StartEvent_1" targetRef="Activity_1uy0edx" />
+    <bpmn:sequenceFlow id="Flow_0nhj3yo" sourceRef="Activity_1uy0edx" targetRef="Event_1ovv74s" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1b67mxw">
+      <bpmndi:BPMNShape id="Participant_0s7ph9u_di" bpmnElement="Participant_0s7ph9u" isHorizontal="true">
+        <dc:Bounds x="156" y="80" width="670" height="370" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1uifhab_di" bpmnElement="Lane_1uifhab" isHorizontal="true">
+        <dc:Bounds x="186" y="250" width="631" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0dvw1uu_di" bpmnElement="Lane_0dvw1uu" isHorizontal="true">
+        <dc:Bounds x="186" y="80" width="631" height="170" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0nhj3yo_di" bpmnElement="Flow_0nhj3yo">
+        <di:waypoint x="567" y="345" />
+        <di:waypoint x="649" y="345" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tdoya6_di" bpmnElement="Flow_0tdoya6">
+        <di:waypoint x="275" y="175" />
+        <di:waypoint x="377" y="175" />
+        <di:waypoint x="377" y="345" />
+        <di:waypoint x="467" y="345" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_1sshawp" bpmnElement="StartEvent_1">
+        <dc:Bounds x="239" y="157" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_032td15_di" bpmnElement="Activity_1uy0edx">
+        <dc:Bounds x="467" y="305" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_09ae56u" bpmnElement="Event_1ovv74s">
+        <dc:Bounds x="649" y="327" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
