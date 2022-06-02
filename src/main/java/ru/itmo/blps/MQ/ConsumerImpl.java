@@ -60,7 +60,7 @@ public class ConsumerImpl implements BackService {
 
 
 
-        var OldBR = brMapper.findBPByUserIdAndProjectId(userId, projectId);
+        Integer OldBR = brMapper.findBPByUserIdAndProjectId(userId, projectId);
         if (OldBR == null) {
             // Update backer list. Only if the backer never backed this project before.
             projectMapper.addBacker(userId, projectId);

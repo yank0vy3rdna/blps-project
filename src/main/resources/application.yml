@@ -6,12 +6,16 @@ spring:
   kafka.bootstrap-servers: localhost:9092
   main:
     allow-bean-definition-overriding: true
-camunda.bpm.client:
-  base-url: http://localhost:8080/engine-rest
-  worker-id: spring-boot-worker
-  basic-auth:
-    username: demo
-    password: demo
+camunda:
+  bpm:
+    client:
+      base-url: http://localhost:8080/engine-rest
+      worker-id: spring-boot-worker
+      basic-auth:
+        username: demo
+        password: demo
+      disable-backoff-strategy: true
+      async-response-timeout: 3000
 server:
   port: 8090
 logging:

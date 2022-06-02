@@ -9,6 +9,6 @@ import lombok.ToString;
 @AllArgsConstructor
 // Make sure the user can only back project as himself.
 public class BackRequestModel {
-    private final Integer projectId;
+    private final String projectName;
     private final Integer amount;
 }
